@@ -23,7 +23,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: countError.message }, { status: 500 });
     }
 
-    if (numberOfBoma > count) {
+    if (count === null || numberOfBoma > count) {
       return NextResponse.json({ error: 'এখানে এই পরিমান শব্দবোমা নাই।' }, { status: 404 });
     }
 

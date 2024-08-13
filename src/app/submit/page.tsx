@@ -1,12 +1,13 @@
 "use client"
 import { useState } from 'react';
-import { supabase } from '../utils/supabaseClient'; // Adjust the import path as needed
+import { createBrowserClient } from '../utils/supabase'; // Adjust the import path as needed
 
 const InsertDataForm = () => {
+  const supabase = createBrowserClient(); // Create a Supabase client for the browser context
+
   const [bani, setBani] = useState('');
   const [name, setName] = useState('');
   const [designation, setDesignation] = useState('');
-  const [password, setPassword] = useState('');
   const [submittedPassword, setSubmittedPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');

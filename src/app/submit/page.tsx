@@ -16,19 +16,22 @@ const InsertDataForm = () => {
     setError('');
     setSuccess('');
 
-    // Fetch the password from the database
-    const { data: passwordData, error: passwordError } = await supabase
-      .from('bani') // Assuming you have a table 'passwords' with a single row containing the required password
-      .select('password')
-      .single();
+    // Fetch all passwords from the database
+    const { data: passwordsData, error: passwordsError } = await supabase
+      .from('passwords')
+      .select('password');
 
-    if (passwordError || !passwordData) {
-      setError('Failed to fetch password');
+    if (passwordsError) {
+      setError('Failed to fetch passwords');
       return;
     }
 
-    // Verify the password
-    if (submittedPassword !== passwordData.password) {
+    // Check if the submitted password matches any entry
+    const isPasswordValid = passwordsData?.some(
+      (entry: { password: string }) => entry.password === submittedPassword
+    );
+
+    if (!isPasswordValid) {
       setError('Invalid password');
       return;
     }

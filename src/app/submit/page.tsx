@@ -24,13 +24,19 @@ const InsertDataForm = () => {
 
     if (passwordsError) {
       setError('Failed to fetch passwords');
+      console.error('Error fetching passwords:', passwordsError);
       return;
     }
+
+    console.log('Fetched passwords:', passwordsData);
 
     // Check if the submitted password matches any entry
     const isPasswordValid = passwordsData?.some(
       (entry: { password: string }) => entry.password === submittedPassword
     );
+
+    console.log('Submitted password:', submittedPassword);
+    console.log('Password valid:', isPasswordValid);
 
     if (!isPasswordValid) {
       setError('Invalid password');
@@ -44,6 +50,7 @@ const InsertDataForm = () => {
 
     if (insertError) {
       setError('Failed to insert data');
+      console.error('Error inserting data:', insertError);
       return;
     }
 

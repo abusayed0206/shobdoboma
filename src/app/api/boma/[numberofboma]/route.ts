@@ -5,7 +5,7 @@ import { createServerClient } from '@/utils/supabase';
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const numberOfBoma = parseInt(url.pathname.split('/').pop() || '0', 10);
-  const { supabase } = createServerClient(cookies());
+  const supabase = createServerClient(cookies());
 
   try {
     if (isNaN(numberOfBoma) || numberOfBoma <= 0) {

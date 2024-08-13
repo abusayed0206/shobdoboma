@@ -11,7 +11,7 @@ const InsertDataForm = () => {
   const [submittedPassword, setSubmittedPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [dbStatus, setDbStatus] = useState('Checking connection...');
+  const [dbStatus, setDbStatus] = useState('ড্যাটাবেজ সংযুগ যাচাই করা হচ্ছে...');
   const [step, setStep] = useState<'password' | 'form'>('password');
 
   useEffect(() => {
@@ -91,75 +91,74 @@ const InsertDataForm = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-4 border rounded shadow-md">
-      <h1 className="text-xl font-semibold mb-4">নতুন শব্দবোমা পাঠান</h1>
-      <p className={`mb-4 ${dbStatus === 'ড্যাটাবেজ সংযুক্ত হইছে' ? 'text-green-600' : 'text-red-600'}`}>
+    <div className="max-w-2xl mx-auto p-6 bg-gray-50 rounded-lg shadow-lg mt-10">
+      <h1 className="text-3xl font-bold text-center mb-6 text-indigo-700">নতুন শব্দবোমা পাঠান</h1>
+      <p className={`mb-6 text-center text-lg font-medium ${dbStatus === 'ড্যাটাবেজ সংযুক্ত হইছে।' ? 'text-green-600' : 'text-red-600'}`}>
         {dbStatus}
       </p>
       {step === 'password' ? (
-        <form onSubmit={handlePasswordSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">গোপন শব্দ</label>
+        <form onSubmit={handlePasswordSubmit} className="space-y-6">
+          <div className="flex flex-col">
+            <label className="block text-lg font-medium text-gray-800">গোপন শব্দ</label>
             <input
               type="password"
               value={submittedPassword}
               onChange={(e) => setSubmittedPassword(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="mt-2 px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-lg"
               required
             />
           </div>
 
-          {error && <p className="text-red-600">{error}</p>}
-          {success && <p className="text-green-600">{success}</p>}
+          {error && <p className="text-red-600 text-center text-lg">{error}</p>}
+          {success && <p className="text-green-600 text-center text-lg">{success}</p>}
 
           <button
             type="submit"
-            className="w-full px-4 py-2 bg-indigo-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-4 py-3 bg-indigo-600 text-white text-lg font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
-            Submit
+            প্রবেশ করুন
           </button>
         </form>
       ) : (
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">শব্দবোমা</label>
-            <input
-              type="text"
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="flex flex-col">
+            <label className="block text-lg font-medium text-gray-800">শব্দবোমা</label>
+            <textarea
               value={boma}
               onChange={(e) => setBoma(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="mt-2 px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-lg h-40"
               required
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700">নাম</label>
+          <div className="flex flex-col">
+            <label className="block text-lg font-medium text-gray-800">নাম</label>
             <input
               type="text"
               value={nam}
               onChange={(e) => setNam(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="mt-2 px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-lg"
               required
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700">পরিচয়</label>
+          <div className="flex flex-col">
+            <label className="block text-lg font-medium text-gray-800">পরিচয়</label>
             <input
               type="text"
               value={poricoy}
               onChange={(e) => setPoricoy(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="mt-2 px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-lg"
               required
             />
           </div>
 
-          {error && <p className="text-red-600">{error}</p>}
-          {success && <p className="text-green-600">{success}</p>}
+          {error && <p className="text-red-600 text-center text-lg">{error}</p>}
+          {success && <p className="text-green-600 text-center text-lg">{success}</p>}
 
           <button
             type="submit"
-            className="w-full px-4 py-2 bg-indigo-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-4 py-3 bg-indigo-600 text-white text-lg font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
             বোমা পাঠান
           </button>

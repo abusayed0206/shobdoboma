@@ -5,9 +5,9 @@ import { createBrowserClient } from '@/utils/supabase'; // Adjust the import pat
 const InsertDataForm = () => {
   const supabase = createBrowserClient(); // Create a Supabase client for the browser context
 
-  const [bani, setBani] = useState('');
-  const [name, setName] = useState('');
-  const [designation, setDesignation] = useState('');
+  const [boma, setBoma] = useState('');
+  const [nam, setNam] = useState('');
+  const [poricoy, setPoricoy] = useState('');
   const [submittedPassword, setSubmittedPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -26,7 +26,7 @@ const InsertDataForm = () => {
           setDbStatus('Failed to connect to database');
           console.error('Database connection error:', error);
         } else if (data) {
-          setDbStatus('Database Connected');
+          setDbStatus('ড্যাটাবেজ সংযুক্ত হইছে।');
         }
       } catch (err) {
         setDbStatus('Failed to connect to database');
@@ -72,34 +72,34 @@ const InsertDataForm = () => {
     setError('');
     setSuccess('');
 
-    // Insert new data into 'bani' table
+    // Insert new data into 'shobdo' table
     const { error: insertError } = await supabase
       .from('shobdo')
-      .insert([{ boma: bani, nam: name, poricoy: designation }]); // Column names updated to English
+      .insert([{ boma, nam, poricoy }]); // Column names updated to English
 
     if (insertError) {
-      setError('Failed to insert data');
+      setError('শব্দবোমা সংযোজন ব্যর্থ হয়েছে');
       console.error('Error inserting data:', insertError);
       return;
     }
 
-    setSuccess('Data inserted successfully');
-    setBani('');
-    setName('');
-    setDesignation('');
+    setSuccess('ড্যাটাবেজে সফলভাবে শব্দবোমা সংযুক্ত হয়েছে।');
+    setBoma('');
+    setNam('');
+    setPoricoy('');
     setSubmittedPassword('');
   };
 
   return (
     <div className="max-w-md mx-auto p-4 border rounded shadow-md">
-      <h1 className="text-xl font-semibold mb-4">Insert New Data</h1>
-      <p className={`mb-4 ${dbStatus === 'Database Connected' ? 'text-green-600' : 'text-red-600'}`}>
+      <h1 className="text-xl font-semibold mb-4">নতুন শব্দবোমা পাঠান</h1>
+      <p className={`mb-4 ${dbStatus === 'ড্যাটাবেজ সংযুক্ত হইছে' ? 'text-green-600' : 'text-red-600'}`}>
         {dbStatus}
       </p>
       {step === 'password' ? (
         <form onSubmit={handlePasswordSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Password</label>
+            <label className="block text-sm font-medium text-gray-700">গোপন শব্দ</label>
             <input
               type="password"
               value={submittedPassword}
@@ -122,33 +122,33 @@ const InsertDataForm = () => {
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Quote</label>
+            <label className="block text-sm font-medium text-gray-700">শব্দবোমা</label>
             <input
               type="text"
-              value={bani}
-              onChange={(e) => setBani(e.target.value)}
+              value={boma}
+              onChange={(e) => setBoma(e.target.value)}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Name</label>
+            <label className="block text-sm font-medium text-gray-700">নাম</label>
             <input
               type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={nam}
+              onChange={(e) => setNam(e.target.value)}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Title</label>
+            <label className="block text-sm font-medium text-gray-700">পরিচয়</label>
             <input
               type="text"
-              value={designation}
-              onChange={(e) => setDesignation(e.target.value)}
+              value={poricoy}
+              onChange={(e) => setPoricoy(e.target.value)}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               required
             />
@@ -161,7 +161,7 @@ const InsertDataForm = () => {
             type="submit"
             className="w-full px-4 py-2 bg-indigo-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
-            Submit Data
+            বোমা পাঠান
           </button>
         </form>
       )}

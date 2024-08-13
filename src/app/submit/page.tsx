@@ -1,5 +1,5 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createBrowserClient } from '@/utils/supabase'; // Adjust the import path as needed
 
 const InsertDataForm = () => {
@@ -8,13 +8,64 @@ const InsertDataForm = () => {
   const [bani, setBani] = useState('');
   const [name, setName] = useState('');
   const [designation, setDesignation] = useState('');
+  const [submittedPassword, setSubmittedPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [dbStatus, setDbStatus] = useState('Checking connection...');
 
-  const handleFormSubmit = async (e: React.FormEvent) => {
+  useEffect(() => {
+    const checkConnection = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('passwords')
+          .select('password')
+          .limit(1); // Limit to 1 to just check if connection is successful
+
+        if (error) {
+          setDbStatus('Failed to connect to database');
+          console.error('Database connection error:', error);
+        } else if (data) {
+          setDbStatus('Database Connected');
+        }
+      } catch (err) {
+        setDbStatus('Failed to connect to database');
+        console.error('Unexpected error:', err);
+      }
+    };
+
+    checkConnection();
+  }, [supabase]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setSuccess('');
+
+    // Fetch all passwords from the database
+    const { data: passwordsData, error: passwordsError } = await supabase
+      .from('passwords')
+      .select('password');
+
+    if (passwordsError) {
+      setError('Failed to fetch passwords');
+      console.error('Error fetching passwords:', passwordsError);
+      return;
+    }
+
+    console.log('Fetched passwords:', passwordsData);
+
+    // Check if the submitted password matches any entry
+    const isPasswordValid = passwordsData?.some(
+      (entry: { password: string }) => entry.password === submittedPassword
+    );
+
+    console.log('Submitted password:', submittedPassword);
+    console.log('Password valid:', isPasswordValid);
+
+    if (!isPasswordValid) {
+      setError('Invalid password');
+      return;
+    }
 
     // Insert new data into 'bani' table
     const { error: insertError } = await supabase
@@ -31,12 +82,16 @@ const InsertDataForm = () => {
     setBani('');
     setName('');
     setDesignation('');
+    setSubmittedPassword('');
   };
 
   return (
     <div className="max-w-md mx-auto p-4 border rounded shadow-md">
       <h1 className="text-xl font-semibold mb-4">Insert New Data</h1>
-      <form onSubmit={handleFormSubmit} className="space-y-4">
+      <p className={`mb-4 ${dbStatus === 'Database Connected' ? 'text-green-600' : 'text-red-600'}`}>
+        {dbStatus}
+      </p>
+      <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700">বাণী</label>
           <input
@@ -65,6 +120,17 @@ const InsertDataForm = () => {
             type="text"
             value={designation}
             onChange={(e) => setDesignation(e.target.value)}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Password</label>
+          <input
+            type="password"
+            value={submittedPassword}
+            onChange={(e) => setSubmittedPassword(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             required
           />

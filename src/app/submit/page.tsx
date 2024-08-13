@@ -74,8 +74,8 @@ const InsertDataForm = () => {
 
     // Insert new data into 'bani' table
     const { error: insertError } = await supabase
-      .from('bani')
-      .insert([{ quote: bani, name: name, title: designation }]); // Column names updated to English
+      .from('shobdo')
+      .insert([{ boma: bani, nam: name, poricoy: designation }]); // Column names updated to English
 
     if (insertError) {
       setError('Failed to insert data');

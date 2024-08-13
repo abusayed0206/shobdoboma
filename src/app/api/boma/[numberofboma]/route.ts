@@ -1,11 +1,13 @@
 // src/app/api/boma/[numberofboma]/route.ts
 import { NextResponse } from 'next/server';
 import { createServerClient } from '@/utils/supabase';
+import { cookies } from 'next/headers'; // Import cookies from next/headers
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const numberOfBoma = parseInt(url.pathname.split('/').pop() || '0', 10);
-  const supabase = createServerClient(cookies());
+  const cookieStore = cookies();
+  const supabase = createServerClient(cookieStore);
 
   try {
     if (isNaN(numberOfBoma) || numberOfBoma <= 0) {

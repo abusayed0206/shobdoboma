@@ -66,7 +66,7 @@ export default function BomaPage() {
       <footer className="w-full p-4 mt-8">
         <div className="max-w-4xl mx-auto bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 rounded-lg shadow-lg p-4 text-center">
           <p className="text-white text-lg font-semibold">
-            <span className="animate-pulse inline-block">❤️</span>'র সহিত তৈয়ার করিয়াছেন{' '}
+            <span className="animate-pulse inline-block">❤️</span>&aposর সহিত তৈয়ার করিয়াছেন{' '}
             <a
               href="https://sayed.page"
               target="_blank"

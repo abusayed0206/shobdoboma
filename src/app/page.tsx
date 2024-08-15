@@ -1,57 +1,92 @@
-import AuthButton from '@/components/AuthButton'
-import ConnectSupabaseSteps from '@/components/ConnectSupabaseSteps'
-import SignUpUserSteps from '@/components/SignUpUserSteps'
-import Header from '@/components/Header'
-import { cookies } from 'next/headers'
-import { createServerClient } from '@/utils/supabase'
-import ThemeToggle from '@/components/ThemeToggle'
+"use client"
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
-export default async function Index() {
-  const cookieStore = cookies()
+interface Boma {
+  boma: string;
+  nam: string;
+  poricoy: string;
+  id: number;
+}
 
-  const canInitSupabaseClient = () => {
-    // This function is just for the interactive tutorial.
-    // Feel free to remove it once you have Supabase connected.
+export default function BomaPage() {
+  const [randomBoma, setRandomBoma] = useState<Boma | null>(null);
+  const [numberOfBoma, setNumberOfBoma] = useState<number>(10);
+  const [bomas, setBomas] = useState<Boma[]>([]);
+  
+  const fetchRandomBoma = async () => {
     try {
-      createServerClient(cookieStore)
-      return true
-    } catch (e) {
-      return false
+      const response = await axios.get('https://shobdoboma.vercel.app/api/boma');
+      setRandomBoma(response.data);
+    } catch (error) {
+      console.error('Error fetching random boma:', error);
     }
-  }
+  };
 
-  const isSupabaseConnected = canInitSupabaseClient()
+  const fetchBomas = async () => {
+    try {
+      const response = await axios.get(`https://shobdoboma.vercel.app/api/boma/${numberOfBoma}`);
+      setBomas(response.data);
+    } catch (error) {
+      console.error('Error fetching bomas:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchRandomBoma();
+    fetchBomas();
+  }, [numberOfBoma]);
 
   return (
-    <div className="flex w-full flex-1 flex-col items-center gap-20">
-      <nav className="flex h-16 w-full justify-center border-b border-b-foreground/10">
-        <div className="flex w-full max-w-4xl items-center justify-between p-3 text-sm">
-          {isSupabaseConnected && <AuthButton />}
-        </div>
-      </nav>
-
-      <div className="flex max-w-4xl flex-1 flex-col gap-20 px-3">
-        <Header />
-        <main className="flex flex-1 flex-col gap-6">
-          <h2 className="mb-4 text-4xl font-bold">Next steps</h2>
-          {isSupabaseConnected ? <SignUpUserSteps /> : <ConnectSupabaseSteps />}
-        </main>
-      </div>
-
-      <footer className="w-full justify-center border-t border-t-foreground/10 p-8 text-center text-xs">
-        <p className="mb-6">
-          Powered by{' '}
-          <a
-            href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-            target="_blank"
-            className="font-bold hover:underline"
-            rel="noreferrer"
+    <div className="max-w-3xl mx-auto px-4 py-8">
+      <div className="mb-8 text-center">
+        <h1 className="text-3xl font-bold mb-4">Random Boma</h1>
+        <div className="bg-gray-100 p-6 rounded-lg shadow-lg">
+          <p className="text-lg mb-4">{randomBoma?.boma || 'Loading...'}</p>
+          <p className="text-md mb-2">নাম: {randomBoma?.nam || 'Loading...'}</p>
+          <p className="text-md mb-2">পরিচয়: {randomBoma?.poricoy || 'Loading...'}</p>
+          <button
+            onClick={fetchRandomBoma}
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
           >
-            Supabase
-          </a>
-        </p>
-        <ThemeToggle />
-      </footer>
+            Randomize
+          </button>
+        </div>
+      </div>
+      
+      <div className="mb-8">
+        <h2 className="text-2xl font-semibold mb-4">Bomas</h2>
+        <div className="mb-4 flex items-center">
+          <input
+            type="number"
+            value={numberOfBoma}
+            onChange={(e) => setNumberOfBoma(Number(e.target.value))}
+            className="border border-gray-300 px-4 py-2 rounded mr-4 w-24"
+          />
+          <button
+            onClick={fetchBomas}
+            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+          >
+            Fetch Bomas
+          </button>
+        </div>
+        <div className="bg-gray-100 p-6 rounded-lg shadow-lg">
+          {bomas.length === 0 ? (
+            <p className="text-center">Loading...</p>
+          ) : (
+            <ul>
+              {bomas.map((boma) => (
+                <li key={boma.id} className="mb-4">
+                  <p className="text-lg mb-2">শব্দবোমা: {boma.boma}</p>
+                  <p className="text-md mb-2">নাম: {boma.nam}</p>
+                  <p className="text-md mb-2">পরিচয়: {boma.poricoy}</p>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
+      
     </div>
-  )
+  );
 }

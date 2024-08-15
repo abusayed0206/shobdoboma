@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import ThemeToggle from '@/components/ThemeToggle'; // Adjust the import path as needed
 
 interface Boma {
   boma: string;
@@ -31,11 +30,15 @@ export default function BomaPage() {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen justify-center items-center p-4 text-black">
-      <div className="bg-gray-100 p-6 rounded-lg shadow-lg max-w-md w-full text-center">
-        <h1 className="text-3xl font-bold mb-4">শব্দবোমা</h1>
-        <p className="text-lg mb-4">{randomBoma?.boma || 'বোমা...'}</p>
-        <p className="text-md mb-2">{randomBoma?.nam || 'লোড...'},{randomBoma?.poricoy || 'হচ্ছে...'}</p>
+    <div className="flex flex-col min-h-screen justify-center items-center p-4 text-black bg-gray-50">
+      <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full text-center border border-gray-200">
+        <h1 className="text-3xl font-bold mb-4 text-teal-600">শব্দবোমা</h1>
+        <p className="text-lg mb-4 bg-yellow-100 p-2 rounded-lg text-yellow-800">
+          {randomBoma?.boma || 'বোমা...'}
+        </p>
+        <p className="text-md mb-2 text-gray-700">
+          {randomBoma?.nam || 'লোড...'}, {randomBoma?.poricoy || 'হচ্ছে...'}
+        </p>
         
         <button
           onClick={fetchRandomBoma}
@@ -46,7 +49,7 @@ export default function BomaPage() {
         </button>
       </div>
       
-      <footer className="w-full justify-center border-t border-t-foreground/10 p-8 text-center text-xs mt-8">
+      <footer className="w-full border-t border-t-foreground/10 p-8 text-center text-xs mt-8 bg-gray-100">
         <p className="mb-6">
           Made with ❤️ by {' '}
           <a
@@ -57,8 +60,16 @@ export default function BomaPage() {
           >
             Sayed
           </a>
+          {' | '}
+          <a
+            href="https://github.com/abusayed0206/shobdoboma"
+            target="_blank"
+            className="font-bold hover:underline"
+            rel="noreferrer"
+          >
+            GitHub
+          </a>
         </p>
-        <ThemeToggle />
       </footer>
     </div>
   );

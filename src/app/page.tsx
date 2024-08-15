@@ -18,14 +18,12 @@ interface Boma {
 export default function BomaPage() {
   const [randomBoma, setRandomBoma] = useState<Boma | null>(null);
   const [loadingRandom, setLoadingRandom] = useState<boolean>(false);
-  const [displayedBoma, setDisplayedBoma] = useState<string>('');
 
   const fetchRandomBoma = async () => {
     setLoadingRandom(true);
     try {
       const response = await axios.get('https://shobdoboma.sayed.page/api/boma');
       setRandomBoma(response.data);
-      setDisplayedBoma(''); // Reset displayed boma for new typing effect
     } catch (error) {
       console.error('Error fetching random boma:', error);
     } finally {
@@ -37,46 +35,21 @@ export default function BomaPage() {
     fetchRandomBoma();
   }, []);
 
-  useEffect(() => {
-    if (randomBoma && randomBoma.boma) {
-      let i = 0;
-      const intervalId = setInterval(() => {
-        if (i < randomBoma.boma.length) {
-          setDisplayedBoma((prev) => prev + randomBoma.boma[i]);
-          i++;
-        } else {
-          clearInterval(intervalId);
-        }
-      }, 30); // Increased speed by 40% (from 50ms to 30ms)
-
-      return () => clearInterval(intervalId);
-    }
-  }, [randomBoma]);
-
-  const getColorfulText = (text: string) => {
-    const colors = ['text-red-500', 'text-blue-500', 'text-green-500', 'text-yellow-500', 'text-purple-500'];
-    return text.split('').map((char, index) => (
-      <span key={index} className={colors[index % colors.length]}>
-        {char}
-      </span>
-    ));
-  };
-
   return (
-    <div className={`relative min-h-screen flex flex-col items-center justify-center p-4 ${hindSiliguri.className}`}>
+    <div className={`relative min-h-screen w-full flex flex-col items-center justify-center p-4 ${hindSiliguri.className}`}>
       <iframe
         src="https://film.sayed.page/"
         className="absolute inset-0 w-full h-full z-0"
         style={{ border: 'none', transform: 'scale(1)', objectFit: 'cover', pointerEvents: 'none' }}
         title="Background"
       ></iframe>
-      <div className="relative z-10 w-full max-w-md flex flex-col min-h-screen">
-        <main className="flex-grow flex items-center justify-center">
-          <div className="bg-white bg-opacity-90 p-8 rounded-2xl shadow-2xl w-full text-center border border-gray-200 transform transition duration-500 hover:scale-105">
-            <h1 className="text-4xl font-bold mb-6 text-purple-600 animate-pulse">শব্দবোমা</h1>
+      <div className="relative z-10 w-full max-w-md flex flex-col items-center justify-center">
+        <main className="flex flex-col items-center justify-center flex-grow">
+          <div className="bg-white bg-opacity-90 p-8 rounded-2xl shadow-2xl w-full text-center border border-gray-200 transform transition duration-500 hover:scale-105 mb-8">
+            <h1 className="text-4xl font-bold mb-6 text-purple-600">শব্দবোমা</h1>
             <div className="mb-6 bg-gradient-to-r from-yellow-100 to-orange-100 p-4 rounded-lg shadow-inner min-h-[100px] flex items-center justify-center">
-              <p className="text-xl font-semibold">
-                {getColorfulText(displayedBoma || 'বোমা...')}
+              <p className="text-xl font-semibold bg-gray-800 text-white px-2 py-1 rounded-lg">
+                {randomBoma?.boma || 'বোমা...'}
               </p>
             </div>
             <p className="text-lg mb-4 text-gray-700">
@@ -103,10 +76,10 @@ export default function BomaPage() {
           </div>
         </main>
         
-        <footer className="w-full p-4 mt-auto">
+        <footer className="w-full p-4 mt-8">
           <div className="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 rounded-lg shadow-lg p-4 text-center">
             <p className="text-white text-lg font-semibold">
-              <span className="animate-pulse inline-block">❤️</span>র সহিত তৈয়ার করিয়াছেন{' '}
+              <span className="inline-block">❤️</span>র সহিত তৈয়ার করিয়াছেন{' '}
               <a
                 href="https://sayed.page"
                 target="_blank"

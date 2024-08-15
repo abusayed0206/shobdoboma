@@ -1,3 +1,4 @@
+"use client";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import ThemeToggle from '@/components/ThemeToggle'; // Adjust the import path as needed

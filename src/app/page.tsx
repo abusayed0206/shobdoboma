@@ -12,12 +12,14 @@ interface Boma {
 export default function BomaPage() {
   const [randomBoma, setRandomBoma] = useState<Boma | null>(null);
   const [loadingRandom, setLoadingRandom] = useState<boolean>(false);
+  const [displayedBoma, setDisplayedBoma] = useState<string>('');
 
   const fetchRandomBoma = async () => {
     setLoadingRandom(true);
     try {
       const response = await axios.get('https://shobdoboma.sayed.page/api/boma');
       setRandomBoma(response.data);
+      setDisplayedBoma(''); // Reset displayed boma for new typing effect
     } catch (error) {
       console.error('Error fetching random boma:', error);
     } finally {
@@ -29,14 +31,30 @@ export default function BomaPage() {
     fetchRandomBoma();
   }, []);
 
+  useEffect(() => {
+    if (randomBoma && randomBoma.boma) {
+      let i = 0;
+      const intervalId = setInterval(() => {
+        if (i < randomBoma.boma.length) {
+          setDisplayedBoma((prev) => prev + randomBoma.boma[i]);
+          i++;
+        } else {
+          clearInterval(intervalId);
+        }
+      }, 50); // Adjust typing speed here
+
+      return () => clearInterval(intervalId);
+    }
+  }, [randomBoma]);
+
   return (
-    <div className="flex flex-col min-h-screen justify-between bg-gradient-to-br from-purple-100 to-blue-100">
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-purple-100 to-blue-100">
       <main className="flex-grow flex items-center justify-center p-4">
         <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md text-center border border-gray-200 transform transition duration-500 hover:scale-105">
           <h1 className="text-4xl font-bold mb-6 text-purple-600 animate-pulse">শব্দবোমা</h1>
-          <div className="mb-6 bg-gradient-to-r from-yellow-100 to-orange-100 p-4 rounded-lg shadow-inner">
-            <p className="text-xl font-semibold text-gray-800 animate-fade-in-down">
-              {randomBoma?.boma || 'বোমা...'}
+          <div className="mb-6 bg-gradient-to-r from-yellow-100 to-orange-100 p-4 rounded-lg shadow-inner min-h-[100px] flex items-center justify-center">
+            <p className="text-xl font-semibold text-gray-800">
+              {displayedBoma || 'বোমা...'}
             </p>
           </div>
           <p className="text-lg mb-4 text-gray-700">
@@ -54,7 +72,7 @@ export default function BomaPage() {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                নতুম বোমা ডেটোনেট হচ্ছে...
+                নতুম বোমা ফাটছে...
               </span>
             ) : (
               'নতুন বোমা'
@@ -63,10 +81,10 @@ export default function BomaPage() {
         </div>
       </main>
       
-      <footer className="w-full p-4 mt-8">
+      <footer className="w-full p-4 mt-auto">
         <div className="max-w-4xl mx-auto bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 rounded-lg shadow-lg p-4 text-center">
           <p className="text-white text-lg font-semibold">
-            <span className="animate-pulse inline-block">❤️</span>&aposর সহিত তৈয়ার করিয়াছেন{' '}
+            <span className="animate-pulse inline-block">❤️</span>র সহিত তৈয়ার করিয়াছেন{' '}
             <a
               href="https://sayed.page"
               target="_blank"

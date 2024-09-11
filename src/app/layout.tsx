@@ -1,19 +1,20 @@
 import { GeistSans } from 'geist/font/sans'
-import ThemeProvider from '@/providers/ThemeProvider'
+import ThemeProvider from '@/app/providers/ThemeProvider'
 import NextTopLoader from 'nextjs-toploader'
 import { Analytics } from '@vercel/analytics/react'
 import './globals.css'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import ReactQueryProvider from '@/providers/ReactQueryProvider'
+import ReactQueryProvider from '@/app/providers/ReactQueryProvider'
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
-  : 'http://localhost:3000'
+  : 'https://shobdoboma.sayed.page/'
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
   title: 'বাংলা শব্দবোমা',
   description: 'যেখানে শব্দবোমা ফাটানো হয়।',
+  image: '/Flag_of_Bangladesh.png',
 }
 
 export default function RootLayout({
@@ -38,8 +39,6 @@ export default function RootLayout({
           <ReactQueryProvider>
             <main className="flex min-h-screen flex-col items-center">
               {children}
-              <Analytics />{' '}
-              {/* ^^ remove this if you are not deploying to vercel. See more at https://vercel.com/docs/analytics  */}
             </main>
             <ReactQueryDevtools initialIsOpen={false} />
           </ReactQueryProvider>

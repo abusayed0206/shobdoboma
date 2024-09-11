@@ -30,7 +30,7 @@ const FILE_PATH = path.join(__dirname, '..', 'public', 'shobdoboma.csv')
 // Function to fetch data from Supabase
 const fetchShobdobomaData = async () => {
   const { data, error } = await supabase
-    .from('shobdoboma')
+    .from('shobdo')
     .select('id,boma, nam, poricoy')
   if (error) {
     console.error('Error fetching data from Supabase:', error)

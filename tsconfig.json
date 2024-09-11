@@ -16,13 +16,10 @@
     "incremental": true,
     "plugins": [{ "name": "next" }],
     "paths": { "@/*": ["./src/*"] },
-    "types": ["@testing-library/jest-dom"]
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    "**/*.test.ts",
-    "**/*.test.tsx",
     "types.d.ts",
     "next-env.d.ts",
     ".next/types/**/*.ts"
